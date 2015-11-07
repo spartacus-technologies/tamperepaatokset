@@ -34,9 +34,9 @@ public class HttpURLConnectionHandler {
             else
                 result.append("&");
 
-            result.append(URLEncoder.encode(entry.getKey(), "ISO-8859-1"));
+            result.append(URLEncoder.encode(entry.getKey(), "windows-1252"));
             result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "ISO-8859-1"));
+            result.append(URLEncoder.encode(entry.getValue(), "windows-1252"));
         }
 
         return result.toString();
@@ -109,7 +109,7 @@ public class HttpURLConnectionHandler {
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "ISO-8859-1"));
+                    new OutputStreamWriter(os, "windows-1252"));
             writer.write(getPostDataString(postDataParams));
 
             writer.flush();
