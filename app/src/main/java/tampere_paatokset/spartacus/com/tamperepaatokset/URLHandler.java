@@ -1,5 +1,7 @@
 package tampere_paatokset.spartacus.com.tamperepaatokset;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -18,21 +20,25 @@ class URLHandler extends WebViewClient implements DataAccess.NetworkListener {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-        /*
-        if (shouldKeepInWebView(url)) {
-            view.loadUrl(url);
-        }
-        else {
-            Intent i=new Intent(Intent.ACTION_VIEW, Uri.parse(url))
+
+        //if (shouldKeepInWebView(url)) {
+        //    view.loadUrl(url);
+        //}
+        //else {
+        if (url.indexOf("filename") != -1) {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             view.getContext().startActivity(i);
+        } else {
+            webView_ = view;
+
+            DataAccess.requestData(netWorkListener_, url, DataAccess.NetworkListener.RequestType.IMAGE);
         }
-    */
+        //}
 
-        webView_ = view;
 
-        DataAccess.requestData(netWorkListener_, url, DataAccess.NetworkListener.RequestType.IMAGE);
+
 
 
 

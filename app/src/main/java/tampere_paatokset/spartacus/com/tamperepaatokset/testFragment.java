@@ -13,6 +13,12 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
+
 import tampere_paatokset.spartacus.com.tamperepaatokset.data_access.DataAccess;
 
 /**
@@ -110,15 +116,37 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
         mListener = null;
     }
 
-    public String httpAdder(String text) {
+    public String httpAdder(String text){
 
         text = text.replace("href=\"/", "href=\"http://ktweb.tampere.fi/");
         text = text.replace("<a class=\"copyright\" href=\"http://www.triplan.fi\" target=\"_blank\">&copy; Triplan Oy</a>", "");
+
         return text;
     }
 
     @Override
-    public void DataAvailable(String data, RequestType type) {
+    public void DataAvailable(String data, RequestType type){
+
+        try {
+
+            // Create the encoder and decoder for Win1252
+            Charset charsetInput = Charset.forName("windows-1252");
+            CharsetDecoder decoder = charsetInput.newDecoder();
+
+            String outputEncoding = "UTF-8";
+            Charset charsetOutput = Charset.forName(outputEncoding);
+            CharsetEncoder encoder = charsetOutput.newEncoder();
+
+// Convert the byte array from starting inputEncoding into UCS2
+            byte[] bufferToConvert = data.getBytes();
+            CharBuffer cbuf = decoder.decode(ByteBuffer.wrap(bufferToConvert));
+
+// Convert the internal UCS2 representation into outputEncoding
+            ByteBuffer bbuf = encoder.encode(CharBuffer.wrap(cbuf));
+            data = new String(bbuf.array(), 0, bbuf.limit(), charsetOutput);
+        } catch(Exception e) {
+
+        }
 
         if (data.indexOf("%PDF") != -1) {
             return;
@@ -138,7 +166,7 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
 
             result = httpAdder(result);
             Log.i("testFragment", result);
-            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=ISO-8859-1", null);
+            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=UTF-8", null);
         }
     }
 
