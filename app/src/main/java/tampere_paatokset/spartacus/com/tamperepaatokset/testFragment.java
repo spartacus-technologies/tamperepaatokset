@@ -138,7 +138,7 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
 
             result = httpAdder(result);
             Log.i("testFragment", result);
-            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=windows-1252", "windows-1252");
+            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=ISO-8859-1", null);
         }
     }
 
