@@ -113,7 +113,7 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
     public String httpAdder(String text) {
 
         text = text.replace("href=\"/", "href=\"http://ktweb.tampere.fi/");
-
+        text = text.replace("<a class=\"copyright\" href=\"http://www.triplan.fi\" target=\"_blank\">&copy; Triplan Oy</a>", "");
         return text;
     }
 
