@@ -4,24 +4,69 @@
     tools:context="tampere_paatokset.spartacus.com.tamperepaatokset.testFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="AKSDJKASDJLKAD"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="100dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="147dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/textInputDate1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="1.1.2015"
+                android:textStyle="normal"
+                android:textSize="32px" />
+
+            <EditText
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/textInputDate2"
+                android:layout_alignBottom="@+id/textInputDate1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:text="1.1.2016"
+                android:textSize="32px" />
+
+            <Spinner
+                android:layout_width="152dp"
+                android:layout_height="match_parent"
+                android:id="@+id/spinnerSelectOrganization"
+                android:spinnerMode="dropdown"
+                android:entries="@array/organizations"
+                style="font-size: 16px;" />
+
+            <Button
+                android:layout_width="71dp"
+                android:layout_height="wrap_content"
+                android:text="Hae"
+                android:id="@+id/buttonSearchSessions"
+                android:layout_below="@+id/textInputDate1"
+                android:layout_alignRight="@+id/textInputDate1"
+                android:layout_alignEnd="@+id/textInputDate1" />
+        </LinearLayout>
+
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/webView"
+            android:layout_marginTop="0dp"
+            android:layout_below="@+id/textInputDate1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </LinearLayout>
 
 </RelativeLayout>

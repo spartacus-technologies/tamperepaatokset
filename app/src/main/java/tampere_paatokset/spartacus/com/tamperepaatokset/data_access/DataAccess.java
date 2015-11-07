@@ -25,16 +25,41 @@ public class DataAccess {
         Log.i("DataAccess:requestData", "path=" + path);
 
         NetworkTask task = new NetworkTask();
-        task.setNetworkListener(listener, type);
+        task.setNetworkListener(listener);
 
         if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-            task.executeOnExecutor(task_executor, path);
+            task.executeOnExecutor(task_executor, "GET", path);
         } else {
             task.execute(path);
         }
 
         //task.execute(path);
     }
+
+    //Registers listener and executes GET Method. After completion executes listeners callback function.
+    public static void requestMeetingData(NetworkListener listener, String date1, String date2, String organization) {
+
+        String path = "http://ktweb.tampere.fi/ktwebbin/dbisa.dll/ktwebscr/epj_kokl.htm";
+
+        if(task_executor == null){
+            //task_executor = Executors.newCachedThreadPool();
+            task_executor = Executors.newFixedThreadPool(30);
+        }
+
+        Log.i("DataAccess:requestData", date1 + date2 + organization);
+
+        NetworkTask task = new NetworkTask();
+        task.setNetworkListener(listener);
+
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
+            task.executeOnExecutor(task_executor, "POST", path, date1, date2, organization);
+        } else {
+            task.execute(path, date1, date2, organization);
+        }
+
+        //task.execute(path);
+    }
+
 
     //Registers listener and executes GET Method. After completion executes listeners callback function.
     public static void requestImageData(NetworkListener listener, String path, NetworkListener.RequestType type) {
@@ -83,7 +108,7 @@ public class DataAccess {
     public static boolean testConnection(NetworkListener listener){
 
         NetworkTask task = new NetworkTask();
-        task.setNetworkListener(listener, null);
+        task.setNetworkListener(listener);
 
         task.execute("http://dev.hel.fi/paatokset/v1/meeting/");
         //task.execute("http://dev.hel.fi/paatokset/v1/agenda_item/");

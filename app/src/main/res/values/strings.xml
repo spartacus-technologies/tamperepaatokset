@@ -5,4 +5,47 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="organizations">
+        <item>Kaikki toimielimet</item>
+        <item>Avopalvelujen johtokunta (AVOJO)</item>
+        <item>Eläkeläisvaltuusto (ELV)</item>
+        <item>Erikoissairaanhoidon johtokunta (ESHJO)</item>
+        <item>Ikäihmisten palvelujen lautakunta (IKILA)</item>
+        <item>Kaupunginhallituksen henkilöstöjaosto (HEJA)</item>
+        <item>Kaupunginhallituksen liiketoimintajaosto (KHLIJA)</item>
+        <item>Kaupunginhallituksen suunnittelukokous (KHSUKO)</item>
+        <item>Kaupunginhallitus (KH)</item>
+        <item>Kaupunginvaltuusto (KV)</item>
+        <item>Kaupunginvaltuusto, kyselytunti (KVKYS)</item>
+        <item>Kotihoidon ja asumispalvelujen johtokunta  (KAJO)</item>
+        <item>Kulttuuri- ja vapaa-aikapalvelujen johtokunta (KUVAJO)</item>
+        <item>Laitoshoidon johtokunta (LAIJO)</item>
+        <item>Lasten ja nuorten palvelujen lautakunta (LANULA)</item>
+        <item>Maahanmuuttajaneuvosto (MANE)</item>
+        <item>Osaamis- ja elinkeinolautakunta (OSELA)</item>
+        <item>Pirkanmaan pelastusoimen neuvottelukunta (PELNEUV)</item>
+        <item>Sairaala- ja kuntoutuspalvelujen johtoknta  (SAKUJO)</item>
+        <item>Sara Hildénin taidemuseon johtokunta (SAHIM</item>
+        <item>Sivistys- ja elämnlaatupalvelujen lautakunta (SIVELA)</item>
+        <item>Tampereen Ateria Liikelaitoksen johtoknta (ATEJO)</item>
+        <item>Tampereen Infra Liikelaitoksen johtokunta (INFRAJO</item>
+        <item>Tampereen Kaupunkiliikenne Liikelaitoksen johtokuta (LIJO)</item>
+        <item>Tampereen kaupunkiseudun joukkoliikennelautakunta (JOLILA)</item>
+        <item>Tampereen Logistiikka Liikelaitoksen johtokunta (LOGJO)</item>
+        <item>Tampereen seudun ammattiopiston näyttötoimikunta (NAYTTO)</item>
+        <item>Tampereen Tilakeskus Liikelaitoksen johtokunta (TIKEJO)</item>
+        <item>Tampereen Vesi Liikelaitoksen johtokunta (VLJO)</item>
+        <item>Tarkastuslautakunta (TARLA)</item>
+        <item>Terveyttä ja toimintakykyä edistävien palvelujen lautakunta (TETOLA)</item>
+        <item>Toisen asteen koulutuksen johtokunta (TAJO)</item>
+        <item>Tullinkulman Työterveys Liikelaitoksen johtokunta (TUKUJO)</item>
+        <item>Vammaisneuvosto (VANE)</item>
+        <item>Vanhusneuvosto (ELNE)</item>
+        <item>Varhaiskasvatuksen ja perusopetuksen johtokunta (PAPEJO)</item>
+        <item>Yhdyskuntalautakunnan jätehuoltojaosto (JATEJ)</item>
+        <item>Yhdyskuntalautakunta (YLA)</item>
+        <item>Ympäristö- ja rakennusjaosto (YRJA)</item>
+    </string-array>
+
 </resources>

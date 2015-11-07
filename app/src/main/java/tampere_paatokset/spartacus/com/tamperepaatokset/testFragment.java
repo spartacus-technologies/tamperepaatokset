@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import tampere_paatokset.spartacus.com.tamperepaatokset.data_access.DataAccess;
 
@@ -19,7 +23,7 @@ import tampere_paatokset.spartacus.com.tamperepaatokset.data_access.DataAccess;
  * Use the {@link testFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class testFragment extends Fragment implements DataAccess.NetworkListener {
+public class testFragment extends Fragment implements DataAccess.NetworkListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +33,10 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
     private String mParam1;
     private String mParam2;
 
+    private Spinner spinnerOrganization;
+
+    private View view_;
+    private WebView webView_;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -62,8 +70,20 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        searchTestData();
-        return inflater.inflate(R.layout.fragment_test, container, false);
+
+        view_ = inflater.inflate(R.layout.fragment_test, container, false);
+        view_.findViewById(R.id.buttonSearchSessions).setOnClickListener(this);
+        ((Spinner)view_.findViewById(R.id.spinnerSelectOrganization)).setOnItemSelectedListener(this);
+        webView_ = (WebView)view_.findViewById(R.id.webView);
+
+        webView_.getSettings().setJavaScriptEnabled(true);
+        webView_.getSettings().setSupportZoom(true);
+        webView_.getSettings().setBuiltInZoomControls(true);
+        URLHandler handler = new URLHandler();
+        handler.netWorkListener_ = this;
+        webView_.setWebViewClient(handler);
+
+        return view_;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,14 +110,70 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
         mListener = null;
     }
 
+    public String httpAdder(String text) {
+
+        text = text.replace("href=\"/", "href=\"http://ktweb.tampere.fi/");
+
+        return text;
+    }
+
     @Override
     public void DataAvailable(String data, RequestType type) {
-        Log.i("testFragment", "data");
+
+        if (data.indexOf("%PDF") != -1) {
+            return;
+        }
+
+        if (data != null) {
+            Log.i("testFragment", data);
+
+            String result = "";
+            try {
+                String removeBefore = "<div id=\"content\" >";
+                result = data.substring(data.lastIndexOf(removeBefore), data.length());
+
+            } catch (Exception e) {
+                result = data;
+            }
+
+            result = httpAdder(result);
+            Log.i("testFragment", result);
+            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=windows-1252", "windows-1252");
+        }
     }
 
     @Override
     public void BinaryDataAvailable(Object data, RequestType type) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        String date1 = ((TextView) view_.findViewById(R.id.textInputDate1)).getText().toString();
+        String date2 = ((TextView) view_.findViewById(R.id.textInputDate2)).getText().toString();
+        String organization = ((Spinner) view_.findViewById(R.id.spinnerSelectOrganization)).getSelectedItem().toString();
+
+        searchData(date1, date2, organization);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String date1 = ((TextView) view_.findViewById(R.id.textInputDate1)).getText().toString();
+        String date2 = ((TextView) view_.findViewById(R.id.textInputDate2)).getText().toString();
+        String organization = ((Spinner) view_.findViewById(R.id.spinnerSelectOrganization)).getSelectedItem().toString();
+
+        searchData(date1, date2, organization);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        String date1 = ((TextView) view_.findViewById(R.id.textInputDate1)).getText().toString();
+        String date2 = ((TextView) view_.findViewById(R.id.textInputDate2)).getText().toString();
+        String organization = ((Spinner) view_.findViewById(R.id.spinnerSelectOrganization)).getSelectedItem().toString();
+
+        searchData(date1, date2, organization);
     }
 
     /**
@@ -116,8 +192,28 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
         public void onFragmentInteraction(Uri uri);
     }
 
-    public void searchTestData() {
-        DataAccess.requestData(this, "http://www.google.fi", RequestType.MEETING);
+    public void searchData(String date1, String date2, String organization) {
+        int start = -1;
+        int end = -1;
+
+        try {
+            start = organization.lastIndexOf("(");
+        } catch (Exception e){
+            start = -1;
+        }
+
+        try {
+            end = organization.lastIndexOf(")");
+        } catch (Exception e){
+            end = -1;
+        }
+
+        String param_organization = "";
+        if (start != -1 && end != -1) {
+            param_organization = organization.substring(start+1, end);
+        }
+
+        DataAccess.requestMeetingData(this, date1, date2, param_organization);
     }
 
 }

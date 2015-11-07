@@ -13,9 +13,8 @@ public class NetworkTask extends AsyncTask<String, Void, Void> {
     String response = null;
     private DataAccess.NetworkListener.RequestType type_;
 
-    public void setNetworkListener(DataAccess.NetworkListener listener, DataAccess.NetworkListener.RequestType type){
+    public void setNetworkListener(DataAccess.NetworkListener listener){
 
-        type_ = type;
         listener_ = listener;
     }
 
@@ -27,20 +26,15 @@ public class NetworkTask extends AsyncTask<String, Void, Void> {
             response = null;
         }
 
-        //first check for existing data in cache:
-        String data = APICache.retrieve(urls[0]);
-
-        if(data != null){
-
-            response = data;
-            return null;
-        }
-
         // params comes from the execute() call: params[0] is the url.
         try {
-
-            response = HttpURLConnectionHandler.sendGet(urls[0]);
-            APICache.store(urls[0], response);
+            if (urls[0].equals("POST")) {
+                response = HttpURLConnectionHandler.sendPost(urls);
+                APICache.store(urls[0], response);
+            } else if (urls[0].equals("GET")) {
+                response = HttpURLConnectionHandler.sendGet(urls[1]);
+                APICache.store(urls[0], response);
+            }
 
         } catch (Exception e) {
 
