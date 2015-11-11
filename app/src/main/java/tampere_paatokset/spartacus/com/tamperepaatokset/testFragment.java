@@ -143,7 +143,7 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
 
 // Convert the internal UCS2 representation into outputEncoding
             ByteBuffer bbuf = encoder.encode(CharBuffer.wrap(cbuf));
-            data = new String(bbuf.array(), 0, bbuf.limit(), charsetOutput);
+            //data = new String(bbuf.array(), 0, bbuf.limit(), charsetOutput);
         } catch(Exception e) {
 
         }
@@ -166,7 +166,7 @@ public class testFragment extends Fragment implements DataAccess.NetworkListener
 
             result = httpAdder(result);
             Log.i("testFragment", result);
-            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=UTF-8", null);
+            ((WebView)getActivity().findViewById(R.id.webView)).loadData(result, "text/html; charset=ANSI", null);
         }
     }
 

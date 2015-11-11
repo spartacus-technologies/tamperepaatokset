@@ -16,7 +16,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -117,16 +119,31 @@ public class HttpURLConnectionHandler {
             os.close();
             int responseCode=conn.getResponseCode();
 
+            byte char1;
+            List<Byte> array;
+
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
+
+                List<Byte> data = new ArrayList<>();
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
+                while ((char1= (byte) br.read()) != -1) {
+
+                    //array = data.getBytes();
+                    if(data.size() > 2635){
+
+                        //String tmp = data.substring(data.length() > 11 ? data.length() - 10 : 0, data.length());
+                        //array = tmp.getBytes();
+
+                        //Log.i("TAG", "size=" + data.length() + " ascii=" + (char)char1 + " int=" + char1);
+                    }
+
+                    data.add(char1);
                 }
+
+                response = EncodingFormatter(data);
             }
             else {
                 response="";
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,6 +154,43 @@ public class HttpURLConnectionHandler {
 
 
 
+    }
+
+    private static String EncodingFormatter(List<Byte> data) {
+
+        String response = "";
+        Integer couter = 0;
+        for(byte char1 : data){
+
+            couter++;
+
+            if(couter > 2635) {
+
+                Log.i("Jeejee", "jeejee");
+            }
+            switch (char1){
+
+                    //ä:
+                    case (byte)0xE4:
+
+                        response += 0xC3  + 0x83 + 0xC6 + 0x92 + 0xC3 + 0x82 + 0xC2 + 0xA4;
+
+                    break;
+                    //ö:
+                    case (byte)0xF6:
+
+                        response += (0xC3 + 0x83 + 0xC6 + 0x92 + 0xC3 + 0x82 + 0xC2 + 0xA4);
+                    break;
+
+                    default:
+                        response += (char)char1;
+
+
+                }
+
+        }
+
+        return response;
     }
 }
 
