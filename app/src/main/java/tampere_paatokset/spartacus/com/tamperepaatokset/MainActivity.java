@@ -1,5 +1,6 @@
 package tampere_paatokset.spartacus.com.tamperepaatokset;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,11 +12,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements testFragment.OnFragmentInteractionListener {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements testFragment.OnFr
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +70,43 @@ public class MainActivity extends AppCompatActivity implements testFragment.OnFr
     }
 
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        /*
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_shares);
+
+        mShareActionProvider = new ShareActionProvider(this);
+
+        // Fetch and store ShareActionProvider
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        item.setIcon(R.mipmap.share_white);
+        */
+
+        //Dummy send intent:
+        //TODO: add real data here...
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Katselen avointa päätösdataa @TamperePaatokset avulla! Katso sinäkin: http://app.sprtc.us #TampereenKaupunki #TamperePäätökset");
+        sendIntent.setType("text/plain");
+        //startActivity(sendIntent);
+        setShareIntent(sendIntent);
+        Log.i("ActivityMain", "Version " + BuildConfig.VERSION_NAME);
+
+
         return true;
+    }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
@@ -79,14 +115,48 @@ public class MainActivity extends AppCompatActivity implements testFragment.OnFr
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        /*
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        */
+        /*
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_h_kanava_videot) {
+            return true;
+        }
+        */
+
+        if(id == R.id.menu_item_shares){
+
+            //String tweetUrl = "https://twitter.com/intent/tweet?text=Katselen avointa päätösdata @HKIPaatokset avulla! Katso sinäkin: www.spartacus-technologies.fi&hashtags=HelsinginKaupunki, HelsinkiPäätökset";
+            String text = "Katselen avointa päätösdataa @HKIPaatokset avulla! Katso sinäkin: http://app.sprtc.us #HelsinginKaupunki #HelsinkiPäätökset";
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+
             return true;
         }
 
+        if (id == R.id.action_twitter) {
+
+            //String tweetUrl = "https://twitter.com/intent/tweet?text=Katselen avointa päätösdata @HKIPaatokset avulla! Katso sinäkin: www.spartacus-technologies.fi&hashtags=HelsinginKaupunki, HelsinkiPäätökset";
+            String tweetUrl = "https://twitter.com/intent/tweet?text=Katselen avointa päätösdataa @HKIPaatokset avulla! Katso sinäkin:&url=http://app.sprtc.us&hashtags=HelsinginKaupunki, HelsinkiPäätökset";
+            //+ "&hashtags=#HelsinginKaupunki, HelsinkiPäätökset";
+            Uri uri = Uri.parse(tweetUrl);
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
